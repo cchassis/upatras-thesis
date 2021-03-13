@@ -1,0 +1,168 @@
+%% This is an example first chapter.  You should put chapter/appendix that you
+%% write into a separate file, and add a line \include{yourfilename} to
+%% main.tex, where `yourfilename.tex' is the name of the chapter/appendix file.
+%% You can process specific files by typing their names in at the
+%% \files=
+%% prompt when you run the file main.tex through LaTeX.
+
+The \acrfull{5gppp} is a joint initiative between the European Commission and the European \acrfull{ict} industry, mainly manufacturers, telecommunications operators, service providers, Small and Medium size Enterprises (SMEs) and research institutions. This partnership will deliver solutions, architectures, technologies and standards for the ubiquitous next generation communication infrastructures of the coming decade. A key challenge is to secure Europe’s leadership in potential sources for new market creation such as smart cities, e-health, intelligent transport, education or entertainment \& media. This will reinforce the European industry as a whole, in order to successfully compete on global markets and open new innovation opportunities.
+
+This effort  comes under the scope of the European Union's Horizon 2020 research and innovation framework, where \euro 700 million \cite{alessandro_bedeschi_2018} have been pledged for investment over the course of the programme. At the time of writing, Large Industry and SMEs in 2018 mobilised private investments that sum up to an amount 10.12 times the European Community's (EC) public investment in the \acrshort{5gppp}. Additionally, the entirety of stakeholders invested a total amount of money that is 7,24 times the public investment in the same period \cite{european_5G_journal_2020}.
+
+
+\section{Objective}
+The \acrshort{5gppp} as of writing, is in its third phase where new projects were launched in June 2018. Of these, three have been selected from the  16 proposals received by the EC in response to the \acrshort{5gppp} \acrshort{ict}-17-2018 call \cite{ict-17-2018}. The purpose of this program is to implement and test advanced 5G infrastructures in Europe for a duration of at least 3 years.
+
+The subject of this thesis will constitute part of one of the aforementioned research projects, \acrfull{5gvinni} \cite{5gvinni-site}, the mission of which is to develop a large-scale, \acrfull{e2e} 5G facility. This experimental facility will be used to demonstrate that performance capabilities conforming to 5G \acrlong{kpi}s (\acrshort{kpi}s) can be met at realistic usage situations. 
+
+To ensure that intended demonstrations are both representative of real-world usage and comprehensive to a wider audience, \acrshort{5gvinni} aims to achieve high use case diversity. For this reason, the engagement of industry verticals such as those taking part in \acrshort{5gppp} Phase 3 projects is key. These,  will bring a wide variety of innovative use cases that will be used to test and validate the \acrshort{5gvinni} facility and its components against 5G \acrshort{kpi}s. 
+
+Primary example of such scenario would be the project's facility site in Patras, Greece, which will present four use cases as proof of concept, one of which is the main focus of this work. More specifically, this thesis aims to describe in detail the development and implementation of an unmanned aerial system platform, able to be remotely controlled and transmit a real-time video feed through its network connection. Additionally, the whole software stack is able to leverage the latest containerization technologies in order to be preemptively well-suited for future applications that would require microservice-enabled endpoints.
+
+\section{Structure}
+The rest of this chapter will provide essential references to pre-existing work regarding standards-based network principles that have been developed in industry \acrfull{sdo}s and previous \acrshort{5gppp} projects. Additionally, an overview of the work that underpins the development of the model 5G-VINNI facility is presented, under which individual facility sites will be based on.
+Chapter 2 will expand on the key concept of network slicing and its accompanying requirements as to clearly define the \acrshort{kpi}s that will be required in order for the use case scenarios to be carried out successfully.
+Chapter 3 will delve further into the specifics of the project under which this thesis is being developed as to provide a better understanding of the architecture and morphology of a 5G-VINNI facility site network.
+Chapter 4 will showcase the use case proposal in detail along with suggested hardware for the implementation, while Chapter 5 will give an overview of the drone system architecture that is being implemented for said use case.
+Chapter 6 finally, will provide a glimpse into concepts that could benefit from the work presented on this thesis along with suggestions on future work for further improvements.
+
+\newpage
+
+\section{Pre-Existing Work}
+While 5G-VINNI is comprised of research projects, the nature of ICT-17 as a whole, is to build test networks that are standards-based and are able to demonstrate practical implementation of work that has previously been carried out in conjunction with funded research projects of its past phases. For this reason, some of the key contributors in 5G research and development are briefly outlined below in order to provide a better understanding of the foundation that preceded this project.
+
+    \subsection{\acrlong{3gpp}}    
+    \label{chap:3gpp-rel15}
+        \subsubsection{TSG SA1 - Service}
+        \acrfull{3gpp} Rel. 14 \acrfull{tr} 22.891 \cite{3GPP_TR_22.891} identified the market for verticals, the use cases and requirements that the \acrshort{3gpp} system would need to support. Namely, these are:
+        
+        \begin{itemize}
+          \item \acrfull{embb}
+          \item Critical Communications
+          \item Massive Machine Type Communications
+          \item Network Operations
+          \item Enhancement of Vehicle-to-Everything (V2X)
+        \end{itemize}
+
+        \subsubsection{TSG SA2 - Architecture}
+        The specification of 3GPP Rel. 15 5G system architecture included in 3GPP \acrfull{ts} 23.501 \cite{3GPP_TS_23.501}, 3GPP \acrshort{ts} 23.502 \cite{3GPP_TS_23.502} and 3GPP \acrshort{ts} 23.503 \cite{3GPP_TS_23.503} Rel. 15 provides an overview of the "5G Phase 1 System", including the key features and functionalities needed to deploy a commercial 5G network. Included are some prominent 5G-specific features:
+
+        \renewcommand{\theenumi}{\Roman{enumi}}
+        \begin{enumerate}
+        
+        \item Architecture Modularisation \newline
+        To improve flexibility over the traditional 4G reference model, where clusters of functions are gathered under network elements, a set of flexible \acrlong{nf}s (\acrshort{nf}s) with looser implementation restrictions are introduced. 
+
+        \item \acrfull{sba} \newline
+        A service-based reference model is introduced, where \acrshort{nf}s are able to mutually provide services.
+
+        \item Network Slicing
+        
+        A network slice refers to a complete \acrshort{e2e} logical network (i.e. both Access and Core Networks) providing telecommunication services and network resources. This enables the network operator to deploy multiple, independent \acrfull{plmn} where each is customized by instantiating only the features, capabilities and services required to satisfy the subset of the served users or a related business customer needs.
+
+        \item \acrfull{mec} support
+        
+        \acrshort{mec} enables operators and 3rd party services to be hosted closer to the User Equipment's (\acrshort{ue}'s) access point of attachment, in order to achieve efficient service delivery through reduced latency and load on the transport network. Additionally, enhanced capability is provided, enabling traffic steering from the User Plane to the local Data Network.
+%\newpage
+        \item Common 5G Core
+        
+        In order to facilitate a gradual deployment of the next generation 5G System, integration with existing legacy 4G systems and to allow independent deployments of 5G \acrshort{ran} and 5G Core, 3GPP specified a set of architecture options\footnote{Numbering of options is not incremental and reflects the 3GPP defined enumeration.}.%: 
+        
+%        \begin{itemize}
+%            \item Options 3, 3a and 3x \acrfull{ns}: allows \acrfull{nr} deployments reusing \acrfull{epc} with the support of \acrfull{lte} \acrfull{enb}. The \acrshort{lte} \acrshort{enb} is connected to the \acrshort{epc} with \acrfull{ns} \acrshort{nr}. The \acrshort{nr} user plane connection to the \acrshort{epc} goes directly (Option 3A) or via the \acrshort{lte} \acrshort{enb} (Option 3). In Option 3x, \acrshort{lte}-\acrshort{enb} and \acrfull{gnb} are leveraging the user plane data transmission, terminated at the latter.
+%        
+%            \item Options 4 and 4a \acrfull{ns}: the \acrshort{gnb} is connected to the \acrfull{ngc} with \acrshort{ns} \acrfull{e-utra}. The \acrshort{e-utra} user plane connection to the \acrshort{ngc} goes directly (Option 4A) or via the \acrshort{gnb} (Option 4).
+%        
+%            \item Option 5: eLTE \acrshort{enb} is connected to the \acrshort{ngc}.
+%        
+%            \item Options 7 and 7A: the eLTE \acrshort{enb} is connected to the \acrshort{ngc} with \acrshort{ns} \acrshort{nr}. The \acrshort{nr} user plane connection to the \acrshort{ngc} goes via the eLTE \acrshort{enb}.
+%        \end{itemize}
+
+        \item 3rd Party \acrfull{af} Integration
+        
+        The flexibility of its architecture coupled with  network slicing makes the 5G system ideal for vertical industries, satisfying diverse and dynamic requirements. Additionally, it is able to provide enhanced capabilities allowing \acrshort{af} from 3rd parties to interact and influence 5G system behaviour. This will further enhance the possibility of customising the architecture and features of a communication system.
+
+        \end{enumerate}
+
+        \subsubsection{TSG SA3 – Security}
+        5G brings a number of new possibilities for \acrfull{mno} to enable new use cases and business models, by introducing mobility to new business sectors and devices. However, this in turn has the potential to open up new threats to customer and the network security, which will not be expanded further is mentioned for the sake of completeness.
+
+        \subsubsection{TSG SA5 - Telecom Management}
+        3GPP \acrshort{ts} 28.530 \cite{3GPP_TS_28.530} defines use cases to be supported by the Rel. 15 3GPP management system which also introduces the key concepts relating to slicing and services.
+        
+        \begin{enumerate}
+        
+        \item Roles in the 5G network
+        \newline
+        The roles identified by 3GPP within a 5G network are defined as:
+        \begin{itemize}
+          \item Communication Service Customer (CSC) – for example, a vertical company.
+          \item Communication Service Provider (CSP) – the actual entity that provisions the communication service for the CSC. This could be an operator that specializes in providing the V2X service. 
+          \item Network Operator (NOP) – the traditional network operator that hosts communication services.
+          \item Virtualisation Infrastructure Service Provider (VISP)
+          \item Data Centre Service Provider (DCSP) – cloud provider where the \acrshort{vnf} may be hosted.
+        \end{itemize}
+
+        \item The Concept of the \acrfull{nsi}
+
+        An \acrshort{nsi} can be composed of multiple \acrfull{nssi} which could be shared across multiple \acrshort{nsi}s. One or multiple \acrshort{nsi}s could be used to provide corresponding communications services. Before deployment, the \acrshort{nsi} has to be initialized, which includes designing, on-boarding and other network-related processes. Finally, when it is no longer needed, the \acrshort{nsi} can be terminated.
+
+        \item The \acrfull{mp}
+
+        3GPP SA5 specifications for Rel. 15 have pointed towards a service oriented framework in the interest of modularity and scalability of management services. Key concepts and design principles of management services are defined in 3GPP TS 28.533 \cite{3GPP_TS_28.533}. These include provision, fault and performance management services for \acrshort{nsi}, \acrshort{nssi} and \acrshort{nf}.
+
+        \item \acrshort{e2e} \acrshort{kpi}s
+        
+        With the introduction of slicing and supported use cases for verticals \acrfull{csc}, there is a need to provide data on the management of said \acrshort{e2e} service. 3GPP SA5 has concluded that the fragmented collection of \acrshort{kpi}s of existing infrastructure and services would not be of interest to the \acrshort{csc}, and has instead created a new specification on the standardized E2E \acrshort{kpi}s in 3GPP TS 28.554 \cite{3GPP_TS_28.554}. Most notably: 
+        
+        \begin{itemize}
+          \item Uplink and Downlink Latency
+          \item Upstream and Downstream Throughput
+          \item Resource Utilization of Network Slice Instance
+        \end{itemize}
+        
+        \end{enumerate}
+        
+        \subsubsection{\acrfull{ran} decomposition}
+        In some implementations of \acrshort{lte}, \acrshort{ran} networks have implemented a separation between the \acrfull{ru} and the \acrfull{bbu}, by exposing the \acrfull{cpri}. This has been conceived to allow the \acrshort{bbu} to be at a network consolidation point, which results in operational efficiencies and cost savings. However, the \acrshort{cpri} interface is constrained by the need to meet low delay and high bandwidth requirements, resulting in a need for high capacity transport links.
+        In 5G, however, 3GPP \acrshort{tr} 38.801 \cite{3GPP_TR_38.801} included work to study possible options for decomposition of the \acrshort{ran} environment which amounts the separation of the \acrshort{ru} from the \acrshort{bbu}. 
+
+    \subsection{\acrshort{5gppp} Architecture Working Group}
+    
+    The \acrshort{5gppp} architecture working group  has acted as the point of consolidation for \acrshort{5gppp} Projects in Phase 1, for topics relating to 5G Architecture. This has led to the production of two white papers which aim at "capturing novel trends and key technological enablers for the realization of the 5G architecture" \cite{view_5g_architecture_v2}. Architectural concepts developed in various projects and initiatives are also targeted, so as to provide a consolidated view on the technical directions in the 5G era.
+
+    \subsection{\acrlong{etsi}}
+    The \acrfull{etsi} \acrfull{isg} for \acrfull{nfv} is the group responsible for the standardization of \acrshort{nfv} technology. \acrshort{nfv} decouples \acrfull{nf}s from purpose-built (proprietary, closed, costly) hardware appliances and migrates them to software images that can run on commodity hardware. Leveraging IT virtualization technologies, \acrshort{nfv} enables traditional \acrshort{nf}s to be virtualized, resulting in the so-called \acrfull{vnf}. These \acrshort{vnf}s can be deployed and operated with great agility on top of commodity hardware, and can be flexibly combined to define network services. To manage them, \acrshort{etsi} \acrshort{isg} \acrshort{nfv} has defined a reference framework, with different functional blocks and interfaces to exchange information. An overview on the foundations for operation in virtualized environments is provided below. 
+
+        \subsubsection{The Concept of the \acrshort{nfv} Network Service}
+        
+        An \acrshort{nfv} Network Service (NS) is a composition of \acrshort{nf}s. A \acrshort{nf} is a processing function in the network which has defined functional behaviour and external interfaces. According to \acrshort{etsi} \acrshort{nfv}, an individual \acrshort{nf} may be implemented as a \acrshort{vnf} (i.e. a software image running on commodity hardware) or as a \acrfull{pnf} (i.e. a purpose-built hardware appliance).
+        The components of a NS include \acrshort{nf} (with at least one \acrshort{vnf}), virtual links and \acrshort{vnf} Forwarding Graphs (VNFFGs). Virtual links are abstractions of physical links to the \acrfull{cp}, exposed by the different \acrshort{nf}s, providing connectivity between them.
+        For a fine-grained control of its performance, scalability, security and reliability, a \acrshort{vnf} can be decomposed into one or more \acrshort{vnf} Components (VNFCs), each performing a well-defined task within the \acrshort{vnf} functionality. Each VNFC is hosted in a single virtual deployment unit (e.g. virtual machine, docker container) and connected with other VNFCs through internal virtual links \cite{8419198}.
+        
+        \subsubsection{\acrshort{etsi} \acrshort{nfv} reference architectural framework}
+        The deployment and operation of NSs in (highly diverse) virtual environments bring multiple points of management that need to be carefully addressed. Most of them depend on the \acrshort{nf} composition mechanism used for NS definition. This mechanism creates a set of dependencies between a given NS and its components, which exerts influence on their management and orchestration of the underlying resources. To compensate for that, \acrshort{etsi} \acrshort{isg} \acrshort{nfv} has defined a reference architectural framework for \acrshort{nfv} in \acrshort{etsi} Group Specification (GS) \acrshort{nfv}-MAN 001 \cite{ETSI_GS_NFV-MAN_001}, which provides basic architectural foundations. These allow for consistency and uniformity during NS deployment and operation and consist of three main working domains:
+        
+        \begin{enumerate}
+
+        \item Infrastructure and \acrshort{nf} Layers
+        
+        These layers include the \acrfull{nfvi} and the different network services (\acrshort{nf} - \acrshort{vnf} and \acrshort{pnf}). The \acrshort{nfvi} is the collection of all hardware and software resources that build up the environment on top of which \acrshort{vnf}s (and their constituent VNFCs) run. Additionally, the set of resources that make up the \acrshort{nfvi} could be distributed over multiple \acrfull{pop}. In such case, \acrshort{vnf}s could be deployed and executed across geographically remote areas, enabling mutli-site NFV scenarios.
+        
+        \item \acrshort{nfv} Management and Orchestration
+        
+        This domain focuses on all the virtualization-specific tasks that are needed for NS deployment and operation in \acrshort{nfv} environments, and is made up of the \acrshort{nfv} \acrfull{mano} architectural framework. \acrshort{nfv} \acrshort{mano} is a software stack consisting of three types of functional blocks, each with a well-defined functionality - Virtualised Infrastructure Manager (VIM), \acrshort{vnf} Manager (VNFM), and \acrshort{nfv} Orchestrator (NFVO). At the lowest abstraction layer, the VIM controls and manages the \acrshort{nfvi} resources on top of which \acrshort{vnf}s are deployed and executed. At the intermediate abstraction layer, \acrshort{vnfm} performs management actions over \acrshort{vnf} instances, such as the lifecycle management of the \acrshort{vnf}s (e.g. instantiation, scaling, healing, termination, performance and fault management). Finally, there is the NFVO.
+        
+        %In order to assist the above-referred functional blocks with their tasks, the \acrshort{nfv} \acrshort{mano} contains a set of data repositories that keep different types of information:
+        
+        %\begin{itemize}
+        %    \item Network Service Catalogue: stores one or more NS Descriptors (NSDs) which are ready-made templates that contain machine-readable information used by the NFVO to deploy instances of a given NS, and operate them throughout their lifetime. 
+        %    \item \acrshort{vnf} Catalogue: stores one or more \acrshort{vnf} Packages, each describing the deployment and operational behaviour of a given \acrshort{vnf}. 
+        %    \item \acrshort{nfvi} Resources Repository: keeps updated information about the state of \acrshort{nfvi} resources. The NFVO makes use of this information to perform resource orchestration functions.
+        %\end{itemize}    
+            
+        \item \acrfull{nms}
+        
+        The \acrshort{nms} domain focuses on traditional (i.e. non-virtualization-related, vendor-agnostic) tasks. Unlike \acrshort{nfv} \acrshort{mano}, which is focused on NS (and \acrshort{vnf}) management and orchestration at the virtualized resource level, \acrshort{nms} focuses on application-aware NS (and \acrshort{vnf}) configuration and management, and is responsible for the deployment and maintenance of \acrshort{pnf}s.
+        
+        \end{enumerate}
