@@ -1,0 +1,116 @@
+\chapter{Tables}
+
+\begin{table}
+\caption{Armadillos}
+\label{arm:table}
+\begin{center}
+\begin{tabular}{||l|l||}\hline
+Armadillos & are \\\hline
+our	   & friends \\\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------------%
+
+\begin{sidewaystable*}
+\scriptsize
+ \caption{Ettus Research Software Defined Radio Platforms}
+
+\label{my-label}
+\begin{tabularx}{\textwidth}{@{}l*{10}{C}c@{}}
+\addlinespace
+\addlinespace
+\toprule
+     & Frequency Range(MHz) & Channel BW(MHz) & Rx/Tx & Duplex (Full/Half) & Transmit  (dBm) & Sample  (MSps) & Interface & Chipset (FPGA) &  Gates (k) & Size (mm)  & Price  \\ 
+     \addlinespace
+\midrule
+\addlinespace 
+USRP B200 & 70-6000 & 56 & 1/1 & Full & 10 & 61,44 & USB3.0 & XC6SLX75 & Gates & Vendor & USD / EUR  \\
+
+USRP B200mini-i & 70-6000 & 56 & 1/1 & Full & 10 & 61,44 & USBOTG & XC6SLX75 & Gates & Vendor & USD / EUR  \\ 
+
+USRP B205mini-i & 70-6000 & 56 & 1/1 & Full & 10 & 61,44 & USBOTG & XC6SLX150 & Gates & Vendor & USD / EUR  \\ 
+
+USRP B200mini & 70-6000 & 56 & 1/1 & Full & 10 & 61,44 & USBOTG & XC6SLX75 & Gates & Vendor & USD / EUR  \\  
+
+USRP B210   & 70-6000 & 56/30.72 & 2/2 & Full/Half & 10 & 61,44 & USB3.0 & XC6SLX150 & 100 & Ettus R.    & 1119 \$ /  \\ 
+
+\addlinespace
+
+USRP E310 & 70-6000 & 56 & 2/2 & Full & 10 & 10 & 1x1Gb & Zynq7020 & Gates & Vendor & USD / EUR  \\ 
+
+USRP E312 & 70-6000 & 56 & 2/2 & Full & 10 & 10 & 1x1Gb & Zynq7020 & Gates & Vendor & USD / EUR  \\ 
+
+USRP E313 & 70-6000 & 56 & 2/2 & Full & 10 & 10 & 1x1Gb & Zynq7020 & Gates & Vendor & USD / EUR  \\ 
+
+\addlinespace 
+
+USRP N200 & - & - & - & - & 15 & 100 & 1x1Gb & DSP1800 & Gates & Vendor & USD / EUR  \\  
+
+USRP N210 & - & - & - & - & 15 & 100 & 1x1Gb & DSP3400 & Gates & Vendor & USD / EUR  \\  
+
+USRP N300 & 10-6000 & 100 & 2/2 & Full & 20 & 153.6 & 2xSFP+ & Zynq7035 & Gates & Vendor & USD / EUR  \\ 
+
+USRP N310 & 10-6000 & 100 & 4/4 & Full & 20 & 153.6 & 2xSFP+ & Zynq7100 & Gates & Vendor & USD / EUR  \\ 
+
+\addlinespace 
+
+USRP X300 & - & - & - & - & 10 & 200 & 2x10Gb & XC7K325T & - & Vendor & USD / EUR  \\  
+
+USRP X310 & - & - & - & - & 10 & 200 & 2x10Gb & XC7K410T & - & Vendor & USD / EUR  \\  
+
+\addlinespace 
+\midrule
+\addlinespace 
+
+CBX 782760 & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\ 
+CBX 783353 & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\
+\addlinespace  
+SBX 782761 & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\  
+SBX 783351 & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\  
+\addlinespace 
+TwinRX & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\ 
+\addlinespace 
+UBX 783775-01 & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\  
+UBX 783774-01 & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\ 
+\addlinespace  
+WBX 782759 & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\  
+WBX 783352 & range & BW & Rx/Tx & Duplex & - & - & - & - & - & - & USD / EUR  \\  
+
+\addlinespace 
+\midrule
+\end{tabularx}
+\end{sidewaystable*}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------------%
+
+\begin{table} \centering
+    \begin{tabular}{@{} cl*{12}c @{}}
+        &&&& \multicolumn{10}{c}{Software Defined Radio Platforms} \\[2ex]
+        && \rot{Open Source} && \rot{Integration} & \rot{Scope} & \rot{Time} & \rot{Cost} 
+        & \rot{Quality} & \rot{Human Resource} & \rot{Communication} 
+        & \rot{Risk} & \rot{Procurement} & \rot{\shortstack[l]{Stakeholder\\Management}} \\
+        \cmidrule{2-13}
+        & GNU Radio 	& \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+        & C++ API  	& \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+        & Python API   	& \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+        & Matlab Simulink   & \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+        \cmidrule{2-13}
+        & Amarisoft LTE	& \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+        & Open BTS		& \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+        & Osmocom  		& \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+        & GNURadio 		& \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+        & GNURadio	  	& \OK && \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK & \OK \\
+ %\rot{\rlap{~Software}}
+        & Closing		& \OK &   &   &   &   &   & \OK &   & \OK & \OK \\
+        \cmidrule[1pt]{2-13}
+    \end{tabular}
+    \caption{Some caption}
+\end{table}
+
+%-------------------------------------------------------------------------------------------------------------------------------------------------------%
+
+
+\clearpage
+\newpage
